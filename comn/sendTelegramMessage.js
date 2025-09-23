@@ -2,7 +2,7 @@ import axios from "axios";
 import { config } from "dotenv";
 config()
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN_HERE;
-const CHAT_ID = "6211199995";
+const CHAT_ID = process.env.CHAT_ID;
 const MESSAGE = "Hello Nasim 👋 from Node.js!";
 
 export async function sendTeleGramMessage(message) {
