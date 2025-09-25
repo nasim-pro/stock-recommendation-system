@@ -37,9 +37,12 @@ const USER_AGENTS = [
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0'
 ];
 
+const CHOSEN_UA = USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)];
+
+
 // Browser-like headers
 const defaultHeaders = {
-    'User-Agent': USER_AGENTS[0],
+    'User-Agent': CHOSEN_UA,
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
     'Accept-Language': 'en-US,en;q=0.9',
     'Referer': 'https://www.google.com/',

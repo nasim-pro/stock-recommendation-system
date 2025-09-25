@@ -10,6 +10,9 @@ const USER_AGENTS = [
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0'
 ];
 
+// Pick ONE UA for this run
+const CHOSEN_UA = USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)];
+
 function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -20,7 +23,7 @@ function sleep(ms = 1000) {
 
 function getHeaders() {
     return {
-        'User-Agent': USER_AGENTS[0],
+        'User-Agent': CHOSEN_UA,
         'Accept': 'application/json, text/javascript, */*; q=0.01',
         'Accept-Encoding': 'gzip, deflate, br',
         'Accept-Language': 'en-US,en;q=0.9',
