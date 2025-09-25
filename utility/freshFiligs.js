@@ -1,48 +1,55 @@
 // utils/freshFilings.js
-import fs from "fs";
-import path from "path";
-
-const stateFile = path.resolve("lastProcessed.json");
+import mongoose from "mongoose";
+import { ProcessingState } from "../model/ProcessingState.js";
 
 /**
- * Filters only fresh filings from NSE response data.
+ * Ensures MongoDB connection is established
+ */
+async function connectDB() {
+    if (mongoose.connection.readyState === 0) {
+        await mongoose.connect(process.env.MONGO_URI);
+    }
+}
+
+/**
+ * Filters only fresh filings from NSE response data and updates DB state.
  * 
  * @param {Array} filings - Array of NSE filings objects
  * @returns {Array} freshFilings - Only new filings not seen in previous runs
  */
-export function getFreshFilings(filings) {
+export async function getFreshFilings(filings) {
     try {
-        let lastProcessedTime = null;
-        // Step 1: Load previous state
-        if (fs.existsSync(stateFile)) {
-            try {
-                const saved = JSON.parse(fs.readFileSync(stateFile, "utf-8"));
-                lastProcessedTime = new Date(saved.lastProcessedTime);
-            } catch (err) {
-                console.error("Error reading lastProcessed.json:", err.message);
-            }
-        }
+        await connectDB();
+        // console.log("filings", filings);
+
+        const key = "nse_filings";
+
+        // Step 1: Load previous state from DB
+        const state = await ProcessingState.findOne({ key });
+        let lastProcessedTime = state?.lastProcessedTime || null;
 
         // Step 2: Filter new filings
         const fresh = filings?.filter(filing => {
             const filingDate = new Date(filing.creation_Date);
-            if (!lastProcessedTime) return true; // First run, take everything
+            if (!lastProcessedTime) return true; // First run → take everything
             return filingDate > lastProcessedTime;
-        });
+        }) || [];
 
         // Step 3: Update the saved timestamp to max creation_Date
         if (filings?.length > 0) {
             const maxTime = new Date(
                 Math.max(...filings.map(f => new Date(f.creation_Date).getTime()))
             );
-            fs.writeFileSync(
-                stateFile,
-                JSON.stringify({ lastProcessedTime: maxTime.toISOString() }, null, 2)
+
+            await ProcessingState.findOneAndUpdate(
+                { key },
+                { lastProcessedTime: maxTime },
+                { upsert: true, new: true }
             );
         }
-
         return fresh;
     } catch (err) {
-        console.log("Error in freeshfiling finder", err);
+        console.error("Error in getFreshFilings (DB version):", err);
+        return [];
     }
 }
