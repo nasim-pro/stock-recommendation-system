@@ -68,16 +68,18 @@ function formatDateYYYYMMDD(date) {
     return `${yyyy}${mm}${dd}`;
 }
 
-function removeDuplicates(arr) {
+function removeBseDuplicates(arr) {
     const seen = new Set();
     return arr.filter(item => {
-        if (seen.has(item?.company)) {
-            return false; // duplicate
-        }
-        seen.add(item?.symbol);
-        return true; // keep first occurrence
+        const keySource = item?.scripCode ?? item?.company ?? "";
+        const key = keySource.toString().trim().toLowerCase();
+        if (!key) return false;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
     });
 }
+
 
 /**
  * Fetch BSE financial results for yesterday
@@ -107,7 +109,7 @@ export async function fetchBSEFinancialResults() {
             headline: item?.HEADLINE,
         }));
 
-        const uniqueResult = removeDuplicates(results)
+        const uniqueResult = removeBseDuplicates(results)
         return uniqueResult;
     } catch (err) {
         console.error('Error fetching BSE filings:', err.response?.status, err.message);
