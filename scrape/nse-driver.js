@@ -11,7 +11,7 @@ export async function nseDriver() {
         console.log(`[${new Date().toLocaleString()} Starting NSE scraper`);
         // Fetch latest quarterly filings from NSE
         const allQuarterlyFilings = await fetchNSEFinancialFilings();
-        const freshFillings = getFreshFilings(allQuarterlyFilings);
+        const freshFillings = await getFreshFilings(allQuarterlyFilings);
         console.log("NSE Fresh Fillings Found", freshFillings.length);
         await sendResultMessage(freshFillings)
         // const recentFilings = [
@@ -69,4 +69,4 @@ export async function nseDriver() {
 
 
 
-// todaysResult()
+nseDriver()
