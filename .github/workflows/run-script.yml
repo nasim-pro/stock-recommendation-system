@@ -4,7 +4,7 @@ on:
   schedule:
     # Run daily at 5:00 AM IST (23:30 UTC)
     - cron: "30 23 * * *"
-  workflow_dispatch: # allows manual trigger from GitHub UI
+  workflow_dispatch:
 
 jobs:
   run-script:
@@ -23,4 +23,8 @@ jobs:
         run: npm install
 
       - name: Run script
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
         run: npm start
