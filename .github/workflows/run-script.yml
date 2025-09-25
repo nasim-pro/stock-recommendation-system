@@ -1,0 +1,26 @@
+name: Run Stock Recommendation Script
+
+on:
+  schedule:
+    # Run daily at 5:00 AM IST (23:30 UTC)
+    - cron: "30 23 * * *"
+  workflow_dispatch: # allows manual trigger from GitHub UI
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.18.3'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run script
+        run: npm start
