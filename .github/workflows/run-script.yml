@@ -1,30 +1,30 @@
-name: Run Stock Recommendation Script
+# name: Run Stock Recommendation Script
 
-on:
-  schedule:
-    # Run daily at 5:00 AM IST (23:30 UTC)
-    - cron: "30 23 * * *"
-  workflow_dispatch:
+# on:
+#   schedule:
+#     # Run daily at 5:00 AM IST (23:30 UTC)
+#     - cron: "30 23 * * *"
+#   workflow_dispatch:
 
-jobs:
-  run-script:
-    runs-on: ubuntu-latest
+# jobs:
+#   run-script:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20.18.3'
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: '20.18.3'
 
-      - name: Install dependencies
-        run: npm install
+#       - name: Install dependencies
+#         run: npm install
 
-      - name: Run script
-        env:
-          MONGO_URI: ${{ secrets.MONGO_URI }}
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          CHAT_ID: ${{ secrets.CHAT_ID }}
-        run: npm start
+#       - name: Run script
+#         env:
+#           MONGO_URI: ${{ secrets.MONGO_URI }}
+#           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+#           CHAT_ID: ${{ secrets.CHAT_ID }}
+#         run: npm start
