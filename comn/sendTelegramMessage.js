@@ -1,6 +1,6 @@
 import axios from "axios";
 import { config } from "dotenv";
-config()
+config({ path: __dirname + "/.env" });
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const CHAT_ID = process.env.CHAT_ID;
 const MESSAGE = "Hello Nasim 👋 from Node.js!";
