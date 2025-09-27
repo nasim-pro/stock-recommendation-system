@@ -1,7 +1,7 @@
 import mongoose, { connect } from "mongoose";
 import { Stock } from "../model/Stock.schema.js";
 import { config } from "dotenv";
-config({ path: __dirname + "/.env" });
+config()
 
 // MongoDB connection
 async function connectToMongoDb() {

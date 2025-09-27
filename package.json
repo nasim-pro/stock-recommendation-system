@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node main-driver.js"
+    "start": "node main-driver.js",
+    "build": "node build.js"
   },
   "type": "module",
   "keywords": [
