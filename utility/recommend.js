@@ -273,31 +273,49 @@ export function recommend(
         let decision = "HOLD";
         let rerating = false;
 
+        // if (
+        //     // Trigger if any of OP, EPS, or PAT shows a significant jump
+        //     ((opResult?.jumpPercent ? opResult.jumpPercent >= 30 : false) ||
+        //         (epsResult?.jumpPercent ? epsResult.jumpPercent >= 40 : false) ||
+        //         (patResult?.jumpPercent ? patResult.jumpPercent >= 40 : false)) &&
+        //     // (epsResult?.jumpPercent ? epsResult.jumpPercent > 50 : true) &&            // sudden EPS jump
+        //     // (epsResult?.newGrowthRate ? epsResult.newGrowthRate > 20 : true) &&       // strong EPS CAGR
+        //     (salesResult?.newGrowthRate ? salesResult.newGrowthRate >= 10 : true) &&   // strong Sales growth
+        //     // (opResult?.newGrowthRate ? opResult.newGrowthRate > 5 : true) &&         // operating margin expansion
+        //     (patResult?.newGrowthRate ? patResult.newGrowthRate >= 10 : true) &&      // clean PAT growth
+        //     // (salesWithinRange !== undefined ? salesWithinRange : true) &&            // Sales confirm EPS
+        //     (peg !== undefined ? peg < 5 : true)                                 // not too overvalued
+        //     // (peChange === null || peChange < 60)                                       // PE not already blown up
+        // ) {
+        //     decision = "BUY";
+        //     rerating = true;
+        // }
+        // else if (
+        //     epsResult.newGrowthRate < 15 ||          // weak fundamentals
+        //     peg > 3 ||                               // clearly overvalued
+        //     (peChange !== null && peChange > 100)    // excessive PE expansion
+        // ) {
+        //     decision = "SELL";
+        //     rerating = false;
+        // }
+
         if (
-            // Trigger if any of OP, EPS, or PAT shows a significant jump
-            ((opResult?.jumpPercent ? opResult.jumpPercent >= 30 : false) ||
-                (epsResult?.jumpPercent ? epsResult.jumpPercent >= 40 : false) ||
-                (patResult?.jumpPercent ? patResult.jumpPercent >= 40 : false)) &&
-            // (epsResult?.jumpPercent ? epsResult.jumpPercent > 50 : true) &&            // sudden EPS jump
-            // (epsResult?.newGrowthRate ? epsResult.newGrowthRate > 20 : true) &&       // strong EPS CAGR
-            (salesResult?.newGrowthRate ? salesResult.newGrowthRate >= 10 : true) &&   // strong Sales growth
-            // (opResult?.newGrowthRate ? opResult.newGrowthRate > 5 : true) &&         // operating margin expansion
-            (patResult?.newGrowthRate ? patResult.newGrowthRate >= 10 : true) &&      // clean PAT growth
-            // (salesWithinRange !== undefined ? salesWithinRange : true) &&            // Sales confirm EPS
-            (peg !== undefined ? peg < 5 : true)                                 // not too overvalued
-            // (peChange === null || peChange < 60)                                       // PE not already blown up
+            // EPS jump trigger (quarterly)
+            (epsResult?.jumpPercent ? epsResult.jumpPercent >= 50 : false) &&
+            // EPS CAGR must be strong
+            (epsResult?.newGrowthRate ? epsResult.newGrowthRate >= 20 : true)
         ) {
             decision = "BUY";
             rerating = true;
         }
         else if (
-            epsResult.newGrowthRate < 15 ||          // weak fundamentals
-            peg > 3 ||                               // clearly overvalued
-            (peChange !== null && peChange > 100)    // excessive PE expansion
+            epsResult?.newGrowthRate < 10 ||          // weak EPS growth
+            (epsResult?.jumpPercent ? epsResult.jumpPercent < 0 : false) // EPS falling
         ) {
             decision = "SELL";
             rerating = false;
         }
+
 
         return {
             EPS: epsResult,
