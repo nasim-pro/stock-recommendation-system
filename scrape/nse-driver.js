@@ -10,7 +10,7 @@ import { addDPSScore } from '../utility/dpsScore.js';
 export async function nseDriver() {
     try {
         console.log('<=====================================================>');
-        console.log(`[${new Date().toLocaleString()} Starting NSE scraper`);
+        console.log(`[${new Date().toLocaleString()}] Starting NSE scraper`);
         // Fetch latest quarterly filings from NSE
         const allQuarterlyFilings = await fetchNSEFinancialFilings();
         const freshFillings = await getFreshFilings(allQuarterlyFilings);
