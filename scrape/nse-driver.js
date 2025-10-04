@@ -5,6 +5,7 @@ import { recommend } from '../utility/recommend.js';
 import { buyOrSell } from '../dbtransaction/buyorsell.js';
 import { getFreshFilings } from '../utility/freshFiligs.js';
 import { sendResultMessage } from '../comn/sendCompanyNames.js';
+import { sendCompanyResults } from '../comn/sendCompanyResults.js'
 export async function nseDriver() {
     try {
         console.log('<=====================================================>');
@@ -15,8 +16,8 @@ export async function nseDriver() {
         console.log("NSE Fresh Fillings Found", freshFillings.length);
         await sendResultMessage(freshFillings)
         // const recentFilings = [
-        //     // { symbol: "MUTHOOTFIN", companyName: "Muthoot Finance Ltd." },
-        //     { symbol: "IL&FSENGG", companyName: "IL&FS Engineering and Construction Company Limited" }
+        //     { symbol: "MEIL", companyName: "Mangal Electrical Industries Ltd" },
+        //     // { symbol: "IL&FSENGG", companyName: "IL&FS Engineering and Construction Company Limited" }
         // ];
 
         const companyDetails = [];
@@ -40,15 +41,15 @@ export async function nseDriver() {
             try {
                 // get the recommendation for the stock to buy or sell
                 const recomendation = recommend(
-                    detail.yearlyEps, 
-                    detail.quarterlyEps, 
-                    detail.yearlySales, 
-                    detail.quarterlySales, 
-                    detail.yearlyOpProfit,
-                    detail.quarterlyOpProfit,
-                    detail.yearlyPat,
-                    detail.quarterlyPat,
-                    detail.peRatio
+                    detail?.yearlyEps, 
+                    detail?.quarterlyEps, 
+                    detail?.yearlySales, 
+                    detail?.quarterlySales, 
+                    detail?.yearlyOpProfit,
+                    detail?.quarterlyOpProfit,
+                    detail?.yearlyPat,
+                    detail?.quarterlyPat,
+                    detail?.peRatio
                 )
                 detail["recomendation"] = recomendation;
                 stockRecommendation.push(detail);
@@ -56,7 +57,9 @@ export async function nseDriver() {
                 console.log("Error finding recommendation", err);
             }
         }
-
+        // console.log("stockRecommendation", JSON.stringify(stockRecommendation, null, 2));
+        // send result as message
+        await sendCompanyResults(stockRecommendation)
         // method to buy or sell
         await buyOrSell(stockRecommendation)
         console.log(`[${new Date().toLocaleString()}] Closing NSE scraper`);
@@ -69,4 +72,4 @@ export async function nseDriver() {
 
 
 
-// nseDriver()
+nseDriver()
