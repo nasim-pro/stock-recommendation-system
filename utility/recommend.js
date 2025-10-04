@@ -301,9 +301,9 @@ export function recommend(
 
         if (
             // EPS jump trigger (quarterly)
-            (epsResult?.jumpPercent ? epsResult.jumpPercent >= 50 : false) &&
-            // EPS CAGR must be strong
-            (epsResult?.newGrowthRate ? epsResult.newGrowthRate >= 20 : true)
+            (epsResult?.jumpPercent ? epsResult.jumpPercent >= 40 : false) &&
+            // EPS CAGR must be strong5
+            (epsResult?.newGrowthRate ? epsResult.newGrowthRate >= 15 : true)
         ) {
             decision = "BUY";
             rerating = true;
