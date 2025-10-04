@@ -12,14 +12,14 @@ export async function nseDriver() {
         console.log('<=====================================================>');
         console.log(`[${new Date().toLocaleString()} Starting NSE scraper`);
         // Fetch latest quarterly filings from NSE
-        // const allQuarterlyFilings = await fetchNSEFinancialFilings();
-        // const freshFillings = await getFreshFilings(allQuarterlyFilings);
-        // console.log("NSE Fresh Fillings Found", freshFillings.length);
-        // await sendResultMessage(freshFillings)
-        const freshFillings = [
-            { symbol: "MEIL", companyName: "Mangal Electrical Industries Ltd" },
-            // { symbol: "IL&FSENGG", companyName: "IL&FS Engineering and Construction Company Limited" }
-        ];
+        const allQuarterlyFilings = await fetchNSEFinancialFilings();
+        const freshFillings = await getFreshFilings(allQuarterlyFilings);
+        console.log("NSE Fresh Fillings Found", freshFillings.length);
+        await sendResultMessage(freshFillings)
+        // const freshFillings = [
+        //     { symbol: "MEIL", companyName: "Mangal Electrical Industries Ltd" },
+        //     // { symbol: "IL&FSENGG", companyName: "IL&FS Engineering and Construction Company Limited" }
+        // ];
 
         const companyDetails = [];
 
