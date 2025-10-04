@@ -25,6 +25,7 @@ PAT: ${safe(r.PAT?.jumpPercent)}%
 OP: ${safe(r.OP?.jumpPercent)}%
 
 PE: ${safe(r.PE)} | PEG: ${safe(r.PEG)} | ROE: ${safe(company.roe)}%
+DPS: ${safe(company.DPS)}
 Decision: ${safe(r.decision)}
   `.trim();
 }
