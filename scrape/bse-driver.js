@@ -5,6 +5,7 @@ import { recommend } from '../utility/recommend.js'
 import { buyOrSell } from '../dbtransaction/buyorsell.js'
 import { sendResultMessage } from '../comn/sendCompanyNames.js'
 import { sendCompanyResults } from '../comn/sendCompanyResults.js'
+import { addDPSScore } from "../utility/dpsScore.js";
 /**
  * Normalize company name for comparison
  * Removes common suffixes like Ltd, Limited, Pvt, etc., and trailing dots
@@ -103,6 +104,8 @@ export async function bseDriver() {
         // send telegram message
         await sendCompanyResults(stockRecommendation)
         // method to buy or sell
+        // add dps score
+        addDPSScore(stockRecommendation)
         await buyOrSell(stockRecommendation)
         console.log(`[${new Date().toLocaleString()}] Closing BSE scraper`);
     } catch (err) {
