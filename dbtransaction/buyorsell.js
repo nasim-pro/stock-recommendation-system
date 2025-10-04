@@ -10,8 +10,7 @@ export async function buyOrSell(stocksArr) {
         for (const stock of stocksArr) {
             try {
                 if (stock.recomendation.decision == "BUY") {
-                    await sendTeleGramMessage(`This stock: ${stock?.ticker || stock.stockName} has jumped to ${stock.recomendation.EPS.jumpPercent}%, please check if it is a good buy`)
-                    // await sendTeleGramMessage("```json\n" + JSON.stringify(stock, null, 2) + "\n```");
+                    // await sendTeleGramMessage(`This stock: ${stock?.ticker || stock.stockName} has jumped to ${stock.recomendation.EPS.jumpPercent}%, please check if it is a good buy`)
                     await buyStock(stock)
                 } else if (stock.recomendation.decision == "SELL") {
                     await sellStock(stock)
